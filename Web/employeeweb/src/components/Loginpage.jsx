@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AiOutlineLock } from 'react-icons/ai';
 
 export default function Loginpage() {
+  const [showpassword, setShowpassword] = useState(false);
   const {
     register,
     formState: { errors },
@@ -42,7 +43,7 @@ export default function Loginpage() {
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Or{' '}
-          <span className="font-medium text-indigo-600 hover:text-indigo-500">
+          <span className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
             Create New Account
           </span>
         </p>
@@ -61,7 +62,7 @@ export default function Loginpage() {
         </div>
         <div className="mb-6">
           <input
-            type="password"
+            type={showpassword ? 'text' : 'password'}
             placeholder="Password"
             {...register('password', { required: true })}
             className="form-control"
@@ -70,7 +71,18 @@ export default function Loginpage() {
             {errors.password?.type === 'required' && 'Password is required'}
           </p>
         </div>
-
+        <div className="form-check mb-6">
+          <input
+            className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+            type="checkbox"
+            onChange={(event) => {
+              setShowpassword(event.target.checked);
+            }}
+          />
+          <label className="form-check-label inline-block text-gray-800">
+            Show Password
+          </label>
+        </div>
         <button
           type="submit"
           className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
