@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import { AiOutlineLock } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-export default function Loginpage() {
-  const [showpassword, setShowpassword] = useState(false);
+export default function CreatenewLogin() {
+  const [confirmpasswordvalid, setconfirmpasswordvalid] = useState(true);
+  const [newpassword, setNewpassword] = useState('');
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const formSubmit = (value) => {
+  const SubmitForm = (value) => {
     axios
-      .post('https://localhost:7243/login', value)
+      .post('https://localhost:7243/newlogin', value)
       .then((res) => {
-        sessionStorage.setItem('generatedToken', res.data);
+        toast.success('Login Created Successfully', {
+          position: 'bottom-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((err) => {
         console.error(err.message);
@@ -40,19 +49,19 @@ export default function Loginpage() {
           alt="Workflow"
         />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Log in to your account
+          Create your Login
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Or{' '}
           <Link
-            to="/newlogin"
+            to="/"
             className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
           >
-            Create New Account
+            Go Back to Login Page
           </Link>
         </p>
       </div>
-      <form onSubmit={handleSubmit(formSubmit)}>
+      <form onSubmit={handleSubmit(SubmitForm)}>
         <div className="mb-6">
           <input
             type="text"
@@ -66,36 +75,49 @@ export default function Loginpage() {
         </div>
         <div className="mb-6">
           <input
-            type={showpassword ? 'text' : 'password'}
-            placeholder="Password"
+            type="password"
+            placeholder="New Password"
             {...register('password', { required: true })}
             className="form-control"
+            onChange={(event) => {
+              setNewpassword(event.target.value);
+            }}
             maxLength="8"
           />
           <p className="text-red-500">
             {errors.password?.type === 'required' && 'Password is required'}
           </p>
         </div>
-        <div className="form-check mb-6">
+        <div className="mb-6">
           <input
-            className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-            type="checkbox"
+            type="password"
+            placeholder="Confirm New Password"
+            className="form-control"
             onChange={(event) => {
-              setShowpassword(event.target.checked);
+              setconfirmpasswordvalid(
+                event.target.value === newpassword && newpassword !== ''
+              );
             }}
+            maxLength="8"
           />
-          <label className="form-check-label inline-block text-gray-800">
-            Show Password
-          </label>
+          <p className="text-red-500">
+            {!confirmpasswordvalid
+              ? 'The confirm password is not matching'
+              : null}
+          </p>
         </div>
-        <button type="submit" className="submit-btn">
+        <button
+          type="submit"
+          className="submit-btn"
+          disabled={!confirmpasswordvalid}
+        >
           <span className="absolute left-0 inset-y-0 flex items-center pl-3">
             <AiOutlineLock
               className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
               aria-hidden="true"
             />
           </span>
-          Login
+          Submit
         </button>
       </form>
     </div>
