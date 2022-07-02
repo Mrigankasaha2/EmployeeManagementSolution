@@ -1,10 +1,11 @@
 import Loginpage from "./components/Loginpage";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <div>
-      <h1>Welcome to React App</h1>
+    <div className="flex justify-center items-center w-screen h-screen bg-slate-400">
+      <ToastContainer />
       <Loginpage />
     </div>
   );

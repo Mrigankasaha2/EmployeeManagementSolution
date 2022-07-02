@@ -18,6 +18,10 @@ namespace EmployeeManagementAPI.Controllers
         public IActionResult ValidateLogin([FromBody] Login login)
         {
             string response = _loginservice.ValidateLogin(login);
+            if(response == "Login not Successful")
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
             return Ok(response);
         }
 
