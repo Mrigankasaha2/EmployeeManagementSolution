@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContextPool<AppDBContext>(option =>
 option.UseSqlServer(builder.Configuration.GetConnectionString("Defaultconnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddCors(options => options.AddDefaultPolicy(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -29,7 +30,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                     };
                 });
-builder.Services.AddCors(options => options.AddDefaultPolicy(x => x.AllowAnyOrigin()));
+
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IDataAdapter , DataAdapter>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
@@ -43,9 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 app.UseCors();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
