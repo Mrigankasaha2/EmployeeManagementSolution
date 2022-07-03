@@ -28,7 +28,7 @@ export default function Employeelist() {
           draggable: true,
           progress: undefined,
         });
-        navigate('/');
+        navigate('/error');
       });
   }, [navigate]);
   const columns = useMemo(
