@@ -3,10 +3,11 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AiOutlineLock } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Loginpage() {
   const [showpassword, setShowpassword] = useState(false);
+  let navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -17,6 +18,7 @@ export default function Loginpage() {
       .post('https://localhost:7243/login', value)
       .then((res) => {
         sessionStorage.setItem('generatedToken', res.data);
+        navigate('/employees');
       })
       .catch((err) => {
         console.error(err.message);
