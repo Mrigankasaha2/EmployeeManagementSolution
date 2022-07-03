@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -7,6 +7,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export default function Loginpage() {
   const [showpassword, setShowpassword] = useState(false);
+  useEffect(() => {
+    sessionStorage.clear();
+    console.log('Session Storage Cleared');
+  });
   let navigate = useNavigate();
   const {
     register,

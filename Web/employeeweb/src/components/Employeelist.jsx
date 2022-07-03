@@ -1,9 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function Employeelist() {
   const [data, setData] = useState([]);
+  let navigate = useNavigate();
   useMemo(() => {
     axios
       .get('https://localhost:7243/employeelist', {
@@ -16,8 +19,18 @@ export default function Employeelist() {
       })
       .catch((err) => {
         console.error(err);
+        toast.error(err.message, {
+          position: 'bottom-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        navigate('/');
       });
-  }, []);
+  }, [navigate]);
   const columns = useMemo(
     () => [
       {
